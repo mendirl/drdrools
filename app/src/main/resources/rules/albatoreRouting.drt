@@ -1,0 +1,25 @@
+template header
+REPORTING_SYSTEM
+SO_NAME
+ROUTING
+
+package io.mend.demo.rules.routing;
+
+import io.mend.demo.rules.routing.RoutingRequest;
+import io.mend.demo.rules.routing.RoutingResponse;
+
+template "routing"
+
+rule "routing @{row.rowNumber}"
+    salience -@{row.rowNumber}
+    when
+        RoutingRequest(
+            reportingSystem == "@{REPORTING_SYSTEM}",
+            soName == "@{SO_NAME}"
+        )
+    then
+        RoutingResponse response = new RoutingResponse("@{ROUTING}");
+        insert(response);
+end
+
+end template
