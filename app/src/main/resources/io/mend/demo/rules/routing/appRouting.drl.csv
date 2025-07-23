@@ -1,0 +1,17 @@
+RuleSet,io.mend.demo.rules.routing,
+Import,io.mend.demo.rules.routing.RoutingRequest,
+Import,io.mend.demo.rules.routing.RoutingResponse,
+RuleTable,Routing Rules,
+CONDITION,CONDITION,ACTION
+"RoutingRequest...","RoutingRequest...",
+"reportingSystem ==""$param""","soName ==""$param""","insert(new RoutingResponse(""$param""));"
+Reporting System,SO Name,Routing
+"SYS1","VENUS","AGG1"
+"SYS2","VENUS","AGG1"
+"SYS3","VENUS","AGG3"
+"SYS1","MARS","AGG2"
+"SYS2","MARS","AGG2"
+"SYS3","MARS","AGG3"
+"SYS1","JUP","AGG1"
+"SYS2","JUP","AGG3"
+"SYS3","JUP","AGG2"
