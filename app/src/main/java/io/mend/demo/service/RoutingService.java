@@ -50,7 +50,7 @@ public class RoutingService {
             }
 
             // Create a default response if no rule matched
-            return new RoutingResponse("DEFAULT");
+            return new RoutingResponse("DEFAULT", "DEFAULT");
         } finally {
             // Always dispose the session to prevent memory leaks
             kieSession.dispose();

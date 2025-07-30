@@ -11,6 +11,6 @@ public class RoutingRequest {
 
 	private String reportingSystem;
 	private String soName;
-	//	private String direction;
+	private String direction;
 
 }

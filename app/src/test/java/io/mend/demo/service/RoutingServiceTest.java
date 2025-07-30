@@ -13,28 +13,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class RoutingServiceTest {
 
-    @Autowired
-    private RoutingService routingService;
+	@Autowired
+	private RoutingService routingService;
 
-    @ParameterizedTest
-    @CsvSource({
-            "SYS1, VENUS, AGG1",
-            "SYS2, MARS, AGG2",
-            "SYS3, JUP, AGG2",
-            "UNKNOWN, UNKNOWN, DEFAULT"
-    })
-    @DisplayName("Test routing with various inputs")
-    void testRouting(String reportingSystem, String soName, String expectedRouting) {
-        // Arrange
-        
-        // Act
-        RoutingRequest request = new RoutingRequest(reportingSystem, soName);
-        RoutingResponse response = routingService.processRoutingRequest(request);
-        
-        // Assert
-        assertEquals(
-                expectedRouting,
-                response.getRouting(),
-                "Routing for " + reportingSystem + ", " + soName + " should be " + expectedRouting);
-    }
+	@ParameterizedTest
+	@CsvSource({
+			"SYS1, VENUS, S, AGG1",
+			"SYS2, MARS, S, AGG2",
+			"SYS3, JUP, S, AGG2",
+			"DEFAULT, DEFAULT, DEFAULT, DEFAULT"
+	})
+	@DisplayName("Test routing with various inputs")
+	void testRouting(String reportingSystem, String soName, String direction, String expectedRouting) {
+		// Arrange
+
+		// Act
+		RoutingRequest request = new RoutingRequest(reportingSystem, soName, direction);
+		RoutingResponse response = routingService.processRoutingRequest(request);
+
+		// Assert
+		RoutingResponse responseExpected = new RoutingResponse(expectedRouting, direction);
+		assertEquals(responseExpected, response);
+	}
 }

@@ -1,6 +1,7 @@
 template header
 REPORTING_SYSTEM
 SO_NAME
+DIRECTION
 ROUTING
 
 package io.mend.demo.rules.routingalt;
@@ -18,7 +19,7 @@ rule "routing @{row.rowNumber}"
             soName == "@{SO_NAME}"
         )
     then
-        var output = new RoutingResponse("@{ROUTING}");
+        var output = new RoutingResponse("@{ROUTING}", "@{DIRECTION}");
         insert(output);
 end
 

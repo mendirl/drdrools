@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class RoutingResponse {
 
 	private String routing;
-	//	private String fullDirection;
+	private String fullDirection;
 
 }
