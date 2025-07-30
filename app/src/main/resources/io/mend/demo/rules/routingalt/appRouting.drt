@@ -14,12 +14,20 @@ template "routing"
 rule "routing @{row.rowNumber}"
     salience -@{row.rowNumber}
     when
+        input : RoutingRequest(
+            $REPORTING_SYSTEM: reportingSystem,
+            $SO_NAME: soName,
+            $DIRECTION: direction
+        )
+
         RoutingRequest(
-            reportingSystem == "@{REPORTING_SYSTEM}",
-            soName == "@{SO_NAME}"
+            $REPORTING_SYSTEM == "@{REPORTING_SYSTEM}",
+            $SO_NAME == "@{SO_NAME}"
         )
     then
-        var output = new RoutingResponse("@{ROUTING}", "@{DIRECTION}");
+        var output = new RoutingResponse();
+        output.setRouting("@{ROUTING}");
+        output.setFullDirection("@{DIRECTION}");
         insert(output);
 end
 
