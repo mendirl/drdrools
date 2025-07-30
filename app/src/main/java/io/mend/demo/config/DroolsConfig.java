@@ -34,10 +34,10 @@ public class DroolsConfig {
     public KieContainer kieContainer() throws IOException {
         var kieFileSystem = kieServices.newKieFileSystem();
 
-        var drtcsvCompiled = createFromDrtCsv();
-        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
-        //        var drlcsvCompiled = createFromDrlCsv();
-        //        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
+        //        var drtcsvCompiled = createFromDrtCsv();
+        //        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
+        var drlcsvCompiled = createFromDrlCsv();
+        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
 
         // Build the KieModule
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
