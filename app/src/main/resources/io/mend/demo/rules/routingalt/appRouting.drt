@@ -1,7 +1,7 @@
 template header
 REPORTING_SYSTEM
 SO_NAME
-DIRECTION
+FULL_DIRECTION
 ROUTING
 
 package io.mend.demo.rules.routingalt;
@@ -27,7 +27,7 @@ rule "routing @{row.rowNumber}"
     then
         var output = new RoutingResponse();
         output.setRouting("@{ROUTING}");
-        output.setFullDirection("@{DIRECTION}");
+        output.setFullDirection("@{FULL_DIRECTION}");
         insert(output);
 end
 

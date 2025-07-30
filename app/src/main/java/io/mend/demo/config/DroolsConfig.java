@@ -23,58 +23,88 @@ import java.io.IOException;
 @Configuration
 public class DroolsConfig {
 
-    private final ResourceLoader resourceLoader;
-    private final KieServices kieServices = KieServices.get();
+	private final ResourceLoader resourceLoader;
+	private final KieServices    kieServices = KieServices.get();
 
-    public DroolsConfig(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
+	public DroolsConfig(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
+	}
 
-    @Bean
-    public KieContainer kieContainer() throws IOException {
-        var kieFileSystem = kieServices.newKieFileSystem();
+	@Bean
+	public KieContainer altKieContainer() throws IOException {
+		var kieFileSystem = kieServices.newKieFileSystem();
 
-        var drtcsvCompiled = createFromDrtCsv();
-        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
-        //        var drlcsvCompiled = createFromDrlCsv();
-        //        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
+		var drtcsvCompiled = createFromDrtCsv();
+		kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
 
-        // Build the KieModule
-        KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
-        kieBuilder.buildAll();
+		// Build the KieModule
+		KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
+		kieBuilder.buildAll();
 
-        // Check for errors
-        Results results = kieBuilder.getResults();
-        if (results.hasMessages(Message.Level.ERROR)) {
-            System.out.println("Build Errors:\n" + results.toString());
-            throw new RuntimeException("Build Errors:\n" + results.toString());
-        } else {
-            System.out.println("Rules successfully loaded");
-        }
+		// Check for errors
+		Results results = kieBuilder.getResults();
+		if (results.hasMessages(Message.Level.ERROR)) {
+			System.out.println("Build Errors:\n" + results.toString());
+			throw new RuntimeException("Build Errors:\n" + results.toString());
+		} else {
+			System.out.println("Rules successfully loaded");
+		}
 
-        // Create and return the KieContainer
-        return kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
-    }
+		// Create and return the KieContainer
+		return kieServices.newKieContainer(kieServices.getRepository()
+													  .getDefaultReleaseId());
+	}
 
-    private String createFromDrtCsv() throws IOException {
-        // Get the decision table CSV file and template file
-        var resourcePathDrt = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.drt");
-        var resourcePathCsv = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.csv");
-        var spreadsheetCompiler = new ExternalSpreadsheetCompiler();
-        return spreadsheetCompiler.compile(resourcePathCsv.getInputStream(),resourcePathDrt.getInputStream(), InputType.CSV, 2,1);
-    }
+	@Bean
+	public KieContainer kieContainer() throws IOException {
+		var kieFileSystem = kieServices.newKieFileSystem();
 
-    private String createFromDrlCsv() throws IOException {
-        // Get the decision table CSV file and template file
-        var resourcePathDrl = resourceLoader.getResource("classpath:io/mend/demo/rules/routing/appRouting.drl.csv");
-        var spreadsheetCompiler = new SpreadsheetCompiler();
-        return spreadsheetCompiler.compile(resourcePathDrl.getInputStream(), InputType.CSV);
-    }
+		var drlcsvCompiled = createFromDrlCsv();
+		kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
 
-    @Bean
-    public KieBase kieBase() throws IOException {
-        KieBaseConfiguration kieBaseConfig = kieServices.newKieBaseConfiguration();
-        kieBaseConfig.setOption(EventProcessingOption.STREAM);
-        return kieContainer().newKieBase(kieBaseConfig);
-    }
+		// Build the KieModule
+		KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
+		kieBuilder.buildAll();
+
+		// Check for errors
+		Results results = kieBuilder.getResults();
+		if (results.hasMessages(Message.Level.ERROR)) {
+			System.out.println("Build Errors:\n" + results.toString());
+			throw new RuntimeException("Build Errors:\n" + results.toString());
+		} else {
+			System.out.println("Rules successfully loaded");
+		}
+
+		// Create and return the KieContainer
+		return kieServices.newKieContainer(kieServices.getRepository()
+													  .getDefaultReleaseId());
+	}
+
+	private String createFromDrtCsv() throws IOException {
+		// Get the decision table CSV file and template file
+		var resourcePathDrt = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.drt");
+		var resourcePathCsv = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.csv");
+		var spreadsheetCompiler = new ExternalSpreadsheetCompiler();
+		return spreadsheetCompiler.compile(
+				resourcePathCsv.getInputStream(),
+				resourcePathDrt.getInputStream(),
+				InputType.CSV,
+				2,
+				1);
+	}
+
+	private String createFromDrlCsv() throws IOException {
+		// Get the decision tablea and rule in DRL.CSV
+		var resourcePathDrl = resourceLoader.getResource("classpath:io/mend/demo/rules/routing/appRouting.drl.csv");
+		var spreadsheetCompiler = new SpreadsheetCompiler();
+		return spreadsheetCompiler.compile(resourcePathDrl.getInputStream(), InputType.CSV);
+	}
+
+	@Bean
+	public KieBase kieBase() throws IOException {
+		KieBaseConfiguration kieBaseConfig = kieServices.newKieBaseConfiguration();
+		kieBaseConfig.setOption(EventProcessingOption.STREAM);
+		return kieContainer().newKieBase(kieBaseConfig);
+	}
+
 }
