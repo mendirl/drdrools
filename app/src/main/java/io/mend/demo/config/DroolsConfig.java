@@ -7,7 +7,6 @@ import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
-import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.conf.EventProcessingOption;
@@ -35,10 +34,10 @@ public class DroolsConfig {
     public KieContainer kieContainer() throws IOException {
         var kieFileSystem = kieServices.newKieFileSystem();
 
-//        var drtcsvCompiled = createFromDrtCsv();
-//        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
-        var drlcsvCompiled = createFromDrlCsv();
-        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
+        var drtcsvCompiled = createFromDrtCsv();
+        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
+        //        var drlcsvCompiled = createFromDrlCsv();
+        //        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
 
         // Build the KieModule
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);

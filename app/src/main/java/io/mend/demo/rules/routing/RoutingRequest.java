@@ -1,31 +1,16 @@
 package io.mend.demo.rules.routing;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoutingRequest {
 
 	private String reportingSystem;
 	private String soName;
+	//	private String direction;
 
-	public RoutingRequest() {
-	}
-
-	public RoutingRequest(String reportingSystem, String soName) {
-		this.reportingSystem = reportingSystem;
-		this.soName = soName;
-	}
-
-	public String getReportingSystem() {
-		return reportingSystem;
-	}
-
-	public void setReportingSystem(String reportingSystem) {
-		this.reportingSystem = reportingSystem;
-	}
-
-	public String getSoName() {
-		return soName;
-	}
-
-	public void setSoName(String soName) {
-		this.soName = soName;
-	}
 }
