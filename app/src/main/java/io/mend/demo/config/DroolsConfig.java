@@ -1,11 +1,13 @@
 package io.mend.demo.config;
 
+import org.drools.decisiontable.ExternalSpreadsheetCompiler;
 import org.drools.decisiontable.InputType;
 import org.drools.decisiontable.SpreadsheetCompiler;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.conf.EventProcessingOption;
@@ -33,13 +35,10 @@ public class DroolsConfig {
     public KieContainer kieContainer() throws IOException {
         var kieFileSystem = kieServices.newKieFileSystem();
 
-        // Get the decision table CSV file and template file
-        var resourcePathDrl = resourceLoader.getResource("classpath:io/mend/demo/rules/routing/appRouting.drl.csv");
-        var spreadsheetCompiler = new SpreadsheetCompiler();
-        var drlCompiled = spreadsheetCompiler.compile(resourcePathDrl.getInputStream(), InputType.CSV);
-
-        // Write the compiled rules to the KieFileSystem
-        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlCompiled);
+//        var drtcsvCompiled = createFromDrtCsv();
+//        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
+        var drlcsvCompiled = createFromDrlCsv();
+        kieFileSystem.write("src/main/resources/io/mend/demo/rules/routing/appRouting.drl", drlcsvCompiled);
 
         // Build the KieModule
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
@@ -56,6 +55,21 @@ public class DroolsConfig {
 
         // Create and return the KieContainer
         return kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
+    }
+
+    private String createFromDrtCsv() throws IOException {
+        // Get the decision table CSV file and template file
+        var resourcePathDrt = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.drt");
+        var resourcePathCsv = resourceLoader.getResource("classpath:io/mend/demo/rules/routingalt/appRouting.csv");
+        var spreadsheetCompiler = new ExternalSpreadsheetCompiler();
+        return spreadsheetCompiler.compile(resourcePathCsv.getInputStream(),resourcePathDrt.getInputStream(), InputType.CSV, 2,1);
+    }
+
+    private String createFromDrlCsv() throws IOException {
+        // Get the decision table CSV file and template file
+        var resourcePathDrl = resourceLoader.getResource("classpath:io/mend/demo/rules/routing/appRouting.drl.csv");
+        var spreadsheetCompiler = new SpreadsheetCompiler();
+        return spreadsheetCompiler.compile(resourcePathDrl.getInputStream(), InputType.CSV);
     }
 
     @Bean
