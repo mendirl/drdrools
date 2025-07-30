@@ -6,7 +6,7 @@ RuleTable Routing,,,
 CONDITION,CONDITION,ACTION,ACTION
 "RoutingRequest...","RoutingRequest...",,
 "reportingSystem == ""$param""","soName == ""$param""","var response = new RoutingResponse();response.setFullDirection(""$param"");","response.setRouting(""$param"");insert(response);"
-REPORTING_SYSTEM,SO_NAME,DIRECTION,ROUTING
+REPORTING_SYSTEM,SO_NAME,FULL_DIRECTION,ROUTING
 SYS1,VENUS,S,AGG1
 SYS2,VENUS,S,AGG1
 SYS3,VENUS,S,AGG3
