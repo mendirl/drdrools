@@ -52,7 +52,7 @@ public class RoutingService {
             }
 
             // Create a default response if no rule matched
-            return new RoutingResponse("DEFAULT", "DEFAULT");
+            return new RoutingResponse("DEFAULT", "D_DEFAULT_F");
         } finally {
             // Always dispose the session to prevent memory leaks
             kieSession.dispose();
@@ -87,7 +87,7 @@ public class RoutingService {
             }
 
             // Create a default response if no rule matched
-            return new RoutingResponse("DEFAULT", "DEFAULT");
+            return new RoutingResponse("DEFAULT", "D_DEFAULT_F");
         } finally {
             // Always dispose the session to prevent memory leaks
             kieSession.dispose();

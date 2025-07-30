@@ -27,7 +27,7 @@ rule "routing @{row.rowNumber}"
     then
         var output = new RoutingResponse();
         output.setRouting("@{ROUTING}");
-        output.setFullDirection("@{FULL_DIRECTION}");
+        output.setFullDirection(@{FULL_DIRECTION});
         insert(output);
 end
 
