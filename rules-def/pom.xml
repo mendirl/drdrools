@@ -10,50 +10,28 @@
     </parent>
 
     <artifactId>rules-def</artifactId>
-    <packaging>kjar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>io.mend</groupId>
             <artifactId>rules-deps</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.drools</groupId>
-            <artifactId>drools-model-compiler</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!--            <plugin>-->
-            <!--                <groupId>org.kie.kogito</groupId>-->
-            <!--                <artifactId>kogito-maven-plugin</artifactId>-->
-            <!--                <version>10.1.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>compile</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>generateModel</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--                <configuration>-->
-
-            <!--                </configuration>-->
-            <!--            </plugin>-->
             <plugin>
-                <groupId>org.kie</groupId>
-                <artifactId>kie-maven-plugin</artifactId>
+                <groupId>org.kie.kogito</groupId>
+                <artifactId>kogito-maven-plugin</artifactId>
                 <version>10.1.0</version>
-                <extensions>true</extensions>
-                <!--                <executions>-->
-                <!--                    <execution>-->
-                <!--                        <phase>compile</phase>-->
-                <!--                        <goals>-->
-                <!--                            <goal>build</goal>-->
-                <!--                        </goals>-->
-                <!--                    </execution>-->
-                <!--                </executions>-->
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generateModel</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
