@@ -1,5 +1,6 @@
 package io.mend.demo.service;
 
+import io.mend.demo.config.DroolsConfig;
 import io.mend.demo.rules.routing.RoutingRequest;
 import io.mend.demo.rules.routing.RoutingResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = {RoutingService.class, DroolsConfig.class})
 class RoutingServiceTest {
 
 	@Autowired
