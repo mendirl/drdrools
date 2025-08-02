@@ -37,24 +37,4 @@ class RoutingServiceTest {
 		assertEquals(responseExpected, response);
 	}
 
-	@ParameterizedTest
-	@CsvSource({
-			"SYS1, VENUS, S, AGG1",
-			"SYS2, MARS, W, AGG2",
-			"SYS3, JUP, E, AGG2",
-			"DEFAULT, DEFAULT, DEFAULT, DEFAULT"
-	})
-	@DisplayName("Test alt routing with various inputs")
-	void testRoutingAlt(String reportingSystem, String soName, String direction, String expectedRouting) {
-		// Arrange
-
-		// Act
-		RoutingRequest request = new RoutingRequest(reportingSystem, soName, direction);
-		RoutingResponse response = routingService.processRoutingRequestAlt(request);
-
-		// Assert
-		RoutingResponse responseExpected = new RoutingResponse(expectedRouting, "D_" + direction + "_F");
-		assertEquals(responseExpected, response);
-	}
-
 }

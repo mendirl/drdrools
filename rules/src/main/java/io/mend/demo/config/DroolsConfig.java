@@ -31,31 +31,6 @@ public class DroolsConfig {
 	}
 
 	@Bean
-	public KieContainer altKieContainer() throws IOException {
-		var kieFileSystem = kieServices.newKieFileSystem();
-
-		var drtcsvCompiled = createFromDrtCsv();
-		kieFileSystem.write("src/main/resources/io/mend/demo/rules/routingalt/appRouting.drl", drtcsvCompiled);
-
-		// Build the KieModule
-		KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
-		kieBuilder.buildAll();
-
-		// Check for errors
-		Results results = kieBuilder.getResults();
-		if (results.hasMessages(Message.Level.ERROR)) {
-			System.out.println("Build Errors:\n" + results.toString());
-			throw new RuntimeException("Build Errors:\n" + results.toString());
-		} else {
-			System.out.println("Rules successfully loaded");
-		}
-
-		// Create and return the KieContainer
-		return kieServices.newKieContainer(kieServices.getRepository()
-													  .getDefaultReleaseId());
-	}
-
-	@Bean
 	public KieContainer kieContainer() throws IOException {
 		var kieFileSystem = kieServices.newKieFileSystem();
 

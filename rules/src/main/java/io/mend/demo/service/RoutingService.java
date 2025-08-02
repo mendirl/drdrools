@@ -17,11 +17,9 @@ import java.util.List;
 public class RoutingService {
 
     private final KieContainer kieContainer;
-    private final KieContainer altKieContainer;
 
-    public RoutingService(KieContainer kieContainer, KieContainer altKieContainer) {
+	public RoutingService(KieContainer kieContainer) {
         this.kieContainer = kieContainer;
-        this.altKieContainer = altKieContainer;
     }
 
     /**
@@ -58,41 +56,5 @@ public class RoutingService {
             kieSession.dispose();
         }
     }
-
-    /**
-     * Process a routing request using Drools rules
-     *
-     * @param request The routing request containing reportingSystem and soName
-     * @return The routing response with the determined routing
-     */
-    public RoutingResponse processRoutingRequestAlt(RoutingRequest request) {
-        // Create a new KieSession for this request
-        KieSession kieSession = altKieContainer.newKieSession();
-
-        try {
-            // Insert the request into the session
-            kieSession.insert(request);
-
-            // Fire all rules (limit to 1 rule execution)
-            kieSession.fireAllRules(1);
-
-            // Collect all RoutingResponse objects from the session
-            List<RoutingResponse> responses = new ArrayList<>();
-            kieSession.getObjects(obj -> obj instanceof RoutingResponse)
-                      .forEach(obj -> responses.add((RoutingResponse) obj));
-
-            // Get the first response if available
-            if (!responses.isEmpty()) {
-                return responses.getFirst();
-            }
-
-            // Create a default response if no rule matched
-            return new RoutingResponse("DEFAULT", "D_DEFAULT_F");
-        } finally {
-            // Always dispose the session to prevent memory leaks
-            kieSession.dispose();
-        }
-    }
-
 
 }
