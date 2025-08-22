@@ -2,8 +2,7 @@ package io.mend.demo.service;
 
 import io.mend.demo.rules.routing.RoutingRequest;
 import io.mend.demo.rules.routing.RoutingResponse;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieRuntimeBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import java.util.List;
 @Service
 public class RoutingService {
 
-    private final KieContainer kieContainer;
+	private final KieRuntimeBuilder kieRuntimeBuilder;
 
-	public RoutingService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
-    }
+	public RoutingService(KieRuntimeBuilder kieRuntimeBuilder) {
+		this.kieRuntimeBuilder = kieRuntimeBuilder;
+	}
 
     /**
      * Process a routing request using Drools rules
@@ -30,9 +29,7 @@ public class RoutingService {
      */
     public RoutingResponse processRoutingRequest(RoutingRequest request) {
         // Create a new KieSession for this request
-        KieSession kieSession = kieContainer.newKieSession();
-
-        try {
+        try (var kieSession = kieRuntimeBuilder.newKieSession()){
             // Insert the request into the session
             kieSession.insert(request);
 
@@ -40,7 +37,7 @@ public class RoutingService {
             kieSession.fireAllRules(1);
 
             // Collect all RoutingResponse objects from the session
-            List<RoutingResponse> responses = new ArrayList<>();
+           var responses = new ArrayList<RoutingResponse>();
             kieSession.getObjects(obj -> obj instanceof RoutingResponse)
                     .forEach(obj -> responses.add((RoutingResponse) obj));
 
@@ -51,9 +48,6 @@ public class RoutingService {
 
             // Create a default response if no rule matched
             return new RoutingResponse("DEFAULT", "D_DEFAULT_F");
-        } finally {
-            // Always dispose the session to prevent memory leaks
-            kieSession.dispose();
         }
     }
 
